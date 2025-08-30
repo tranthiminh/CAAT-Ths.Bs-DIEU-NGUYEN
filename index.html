@@ -1,0 +1,1026 @@
+1<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Đánh Giá Đường Hô Hấp Mãn Tính (CAAT) - CHAC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .chac-logo {
+            display: inline-block;
+            background: white;
+            color: #2c3e50;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .question-group {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .question-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-left, .question-right {
+            font-weight: 600;
+            font-size: 1.1em;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .question-left {
+            color: #28a745;
+            text-align: left;
+        }
+
+        .question-right {
+            color: #dc3545;
+            text-align: right;
+        }
+
+        .rating-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-option:hover {
+            transform: scale(1.1);
+        }
+
+        .rating-circle {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            background: white;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option input[type="radio"]:checked + .rating-circle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .rating-label {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .score-display h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+
+        .patient-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .patient-info input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .patient-info input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .email-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .email-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #212529;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .interpretation {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-radius: 15px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .interpretation h3 {
+            margin-bottom: 15px;
+            color: #856404;
+        }
+
+        .interpretation ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .interpretation li {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        .result-display {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+        }
+
+        .result-display.show {
+            display: block;
+        }
+
+        .result-content {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 2000;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .patient-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-container {
+                gap: 8px;
+            }
+            
+            .rating-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
+            
+            .score-display {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+            }
+
+            .submit-btn, .email-btn, .copy-btn {
+                margin: 5px 0;
+                display: block;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>CAAT</h1>
+            <div class="subtitle">Bảng Đánh Giá Đường Hô Hấp Mãn Tính</div>
+            <div class="chac-logo">Ths.Bs Diệu Nguyên - Trung Tâm Hen Phổi</div>
+        </div>
+
+        <div class="score-display">
+            <h3>Tổng điểm</h3>
+            <div class="score-value" id="totalScore">0</div>
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                <p><strong>Bảng câu hỏi này sẽ giúp bạn và chuyên gia chăm sóc sức khỏe đo lường tác động của bệnh phổi đối với sức khỏe và cuộc sống hàng ngày của bạn.</strong></p>
+                <p>Đối với mỗi mục dưới đây, hãy chọn ô mô tả đúng nhất tình trạng hiện tại của bạn. Đảm bảo chỉ chọn một câu trả lời cho mỗi câu hỏi.</p>
+            </div>
+
+            <form id="caatForm">
+                <!-- Question 1: Cough -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi không bao giờ ho</div>
+                        <div class="question-right">Tôi ho liên tục</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2: Phlegm -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi không có đờm (chất nhầy) trong ngực</div>
+                        <div class="question-right">Ngực tôi đầy hoàn toàn đờm (chất nhầy)</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3: Chest tightness -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Ngực tôi hoàn toàn không cảm thấy tức nghẹt</div>
+                        <div class="question-right">Ngực tôi cảm thấy rất tức nghẹt</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4: Breathlessness -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Khi tôi đi lên dốc hoặc một tầng cầu thang, tôi không bị khó thở</div>
+                        <div class="question-right">Khi tôi đi lên dốc hoặc một tầng cầu thang, tôi rất khó thở</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5: Activities at home -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi không bị hạn chế làm bất kỳ hoạt động nào ở nhà</div>
+                        <div class="question-right">Tôi rất bị hạn chế làm các hoạt động ở nhà</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 6: Confidence leaving home -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi tự tin rời khỏi nhà bất chấp tình trạng phổi của mình</div>
+                        <div class="question-right">Tôi không tự tin rời khỏi nhà do tình trạng phổi của mình</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 7: Sleep -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi ngủ ngon</div>
+                        <div class="question-right">Tôi không ngủ ngon vì tình trạng phổi của mình</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 8: Energy -->
+                <div class="question-group">
+                    <div class="question-text">
+                        <div class="question-left">Tôi có rất nhiều năng lượng</div>
+                        <div class="question-right">Tôi hoàn toàn không có năng lượng</div>
+                    </div>
+                    <div class="rating-container">
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="0" onchange="updateScore()">
+                            <div class="rating-circle">0</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="1" onchange="updateScore()">
+                            <div class="rating-circle">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="2" onchange="updateScore()">
+                            <div class="rating-circle">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="3" onchange="updateScore()">
+                            <div class="rating-circle">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="4" onchange="updateScore()">
+                            <div class="rating-circle">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="5" onchange="updateScore()">
+                            <div class="rating-circle">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interpretation">
+                    <h3>Giải thích điểm số CAAT:</h3>
+                    <ul>
+                        <li><strong>0-10 điểm:</strong> Tác động thấp - Triệu chứng có ít ảnh hưởng đến cuộc sống hàng ngày</li>
+                        <li><strong>11-20 điểm:</strong> Tác động trung bình - Triệu chứng có ảnh hưởng đáng kể đến cuộc sống</li>
+                        <li><strong>21-30 điểm:</strong> Tác động cao - Triệu chứng có ảnh hưởng lớn đến cuộc sống</li>
+                        <li><strong>31-40 điểm:</strong> Tác động rất cao - Triệu chứng có ảnh hưởng rất nghiêm trọng đến cuộc sống</li>
+                    </ul>
+                </div>
+
+                <div class="submit-container">
+                    <div class="patient-info">
+                        <input type="text" id="patientName" placeholder="Họ và tên bệnh nhân" required>
+                        <input type="text" id="patientAge" placeholder="Tuổi" required>
+                        <input type="tel" id="patientPhone" placeholder="Số điện thoại" required>
+                        <input type="text" id="doctorName" placeholder="Tên bác sĩ (tùy chọn)">
+                        <input type="email" id="additionalEmail" placeholder="Email bổ sung (tùy chọn)">
+                    </div>
+                    <button type="button" class="submit-btn" onclick="generateResult()">Tạo Kết Quả</button>
+                    <button type="button" class="email-btn" onclick="sendEmail()" style="display:none;" id="emailBtn">Gửi Email</button>
+                    <button type="button" class="copy-btn" onclick="copyResult()" style="display:none;" id="copyBtn">Sao Chép Kết Quả</button>
+                </div>
+
+                <div class="result-display" id="resultDisplay">
+                    <h3>Kết Quả Đánh Giá CAAT:</h3>
+                    <div class="result-content" id="resultContent"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p><strong>Nguồn:</strong> CAAT - Phone & Web format</p>
+            <p>CAAT/CAT là thương hiệu của GSK. Bảng đánh giá CAAT được phát triển bởi một nhóm chuyên gia quốc tế liên ngành với sự hỗ trợ từ GSK.</p>
+            <p>© 2009-2024 GSK 'Group of Companies'. Tất cả các quyền được bảo lưu.</p>
+        </div>
+    </div>
+
+    <script>
+        let resultData = '';
+
+        function updateScore() {
+            let totalScore = 0;
+            for (let i = 1; i <= 8; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedOption) {
+                    totalScore += parseInt(selectedOption.value);
+                }
+            }
+            document.getElementById('totalScore').textContent = totalScore;
+        }
+
+        function getInterpretation(score) {
+            if (score <= 10) return "Tác động thấp";
+            if (score <= 20) return "Tác động trung bình";
+            if (score <= 30) return "Tác động cao";
+            return "Tác động rất cao";
+        }
+
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = isError ? 
+                'linear-gradient(135deg, #dc3545 0%, #c82333 100%)' : 
+                'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function generateResult() {
+            // Check if all questions are answered
+            let allAnswered = true;
+            for (let i = 1; i <= 8; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selectedOption) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (!allAnswered) {
+                showNotification('Vui lòng trả lời tất cả các câu hỏi!', true);
+                return;
+            }
+            
+            // Get form data
+            const patientName = document.getElementById('patientName').value;
+            const patientAge = document.getElementById('patientAge').value;
+            const patientPhone = document.getElementById('patientPhone').value;
+            const doctorName = document.getElementById('doctorName').value;
+            
+            if (!patientName || !patientAge || !patientPhone) {
+                showNotification('Vui lòng điền đầy đủ thông tin bệnh nhân!', true);
+                return;
+            }
+            
+            // Calculate final score
+            let totalScore = 0;
+            let responses = [];
+            const questions = [
+                'Ho',
+                'Đờm (chất nhầy) trong ngực',
+                'Cảm giác tức nghẹt ngực',
+                'Khó thở khi lên dốc/cầu thang',
+                'Hạn chế hoạt động ở nhà',
+                'Tự tin rời khỏi nhà',
+                'Chất lượng giấc ngủ',
+                'Mức độ năng lượng'
+            ];
+            
+            for (let i = 1; i <= 8; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                const score = parseInt(selectedOption.value);
+                totalScore += score;
+                responses.push(`${questions[i-1]}: ${score} điểm`);
+            }
+            
+            const interpretation = getInterpretation(totalScore);
+            
+            // Create result content
+            resultData = `Kết quả Bảng Đánh Giá Đường Hô Hấp Mãn Tính (CAAT)
+
+THÔNG TIN BỆNH NHÂN:
+- Họ tên: ${patientName}
+- Tuổi: ${patientAge}
+- Số điện thoại: ${patientPhone}
+- Bác sĩ phụ trách: ${doctorName || 'Không có'}
+
+KẾT QUẢ CHI TIẾT:
+${responses.join('\n')}
+
+TỔNG ĐIỂM: ${totalScore}/40
+ĐÁNH GIÁ: ${interpretation}
+
+GIẢI THÍCH:
+- 0-10 điểm: Tác động thấp - Triệu chứng có ít ảnh hưởng đến cuộc sống hàng ngày
+- 11-20 điểm: Tác động trung bình - Triệu chứng có ảnh hưởng đáng kể đến cuộc sống
+- 21-30 điểm: Tác động cao - Triệu chứng có ảnh hưởng lớn đến cuộc sống
+- 31-40 điểm: Tác động rất cao - Triệu chứng có ảnh hưởng rất nghiêm trọng đến cuộc sống
+
+Ngày đánh giá: ${new Date().toLocaleDateString('vi-VN')}
+Thời gian: ${new Date().toLocaleTimeString('vi-VN')}
+
+---
+Trung Tâm Hen Phổi (CHAC)
+Nguồn: CAAT - Phone & Web format
+CAAT/CAT là thương hiệu của GSK`;
+            
+            // Display result
+            document.getElementById('resultContent').textContent = resultData;
+            document.getElementById('resultDisplay').classList.add('show');
+            document.getElementById('emailBtn').style.display = 'inline-block';
+            document.getElementById('copyBtn').style.display = 'inline-block';
+            
+            // Scroll to result
+            document.getElementById('resultDisplay').scrollIntoView({ behavior: 'smooth' });
+            
+            showNotification(`Kết quả đã được tạo!\nTổng điểm: ${totalScore}/40 - ${interpretation}`);
+        }
+
+        function sendEmail() {
+            if (!resultData) {
+                showNotification('Vui lòng tạo kết quả trước khi gửi email!', true);
+                return;
+            }
+
+            const patientName = document.getElementById('patientName').value;
+            const emailSubject = `Kết quả CAAT - ${patientName}`;
+            
+            // Multiple recipient emails (default + additional)
+            const recipients = [
+                'dieunguyen105@hotmail.com',
+                
+            ];
+            
+            // Add additional email if provided
+            const additionalEmail = document.getElementById('additionalEmail').value.trim();
+            if (additionalEmail && additionalEmail.includes('@')) {
+                recipients.push(additionalEmail);
+            }
+            
+            const recipientString = recipients.join(',');
+            
+            // Try multiple email methods
+            
+            // Method 1: Gmail web interface with multiple recipients
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipientString)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(resultData)}`;
+            
+            // Method 2: Traditional mailto with multiple recipients
+            const mailtoUrl = `mailto:${recipientString}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(resultData)}`;
+            
+            // Try to open Gmail first, then fallback to mailto
+            const newWindow = window.open(gmailUrl, '_blank');
+            
+            // If popup is blocked or Gmail doesn't open, try mailto
+            setTimeout(() => {
+                if (!newWindow || newWindow.closed) {
+                    window.location.href = mailtoUrl;
+                }
+            }, 1000);
+            
+            const emailCount = recipients.length;
+            showNotification(`Đang mở email client để gửi kết quả đến ${emailCount} người nhận...`);
+        }
+
+        function copyResult() {
+            if (!resultData) {
+                showNotification('Không có kết quả để sao chép!', true);
+                return;
+            }
+
+            // Try to use modern clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(resultData).then(() => {
+                    showNotification('Đã sao chép kết quả vào clipboard!');
+                }).catch(() => {
+                    fallbackCopy();
+                });
+            } else {
+                fallbackCopy();
+            }
+        }
+
+        function fallbackCopy() {
+            // Fallback method for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = resultData;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('Đã sao chép kết quả vào clipboard!');
+            } catch (err) {
+                showNotification('Không thể sao chép. Vui lòng chọn và copy thủ công.', true);
+                // Select the result content for manual copying
+                const resultContent = document.getElementById('resultContent');
+                const range = document.createRange();
+                range.selectNode(resultContent);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Auto-save form data to prevent data loss
+        function saveFormData() {
+            const formData = {};
+            
+            // Save patient info
+            formData.patientName = document.getElementById('patientName').value;
+            formData.patientAge = document.getElementById('patientAge').value;
+            formData.patientPhone = document.getElementById('patientPhone').value;
+            formData.doctorName = document.getElementById('doctorName').value;
+            formData.additionalEmail = document.getElementById('additionalEmail').value;
+            
+            // Save question responses
+            for (let i = 1; i <= 8; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedOption) {
+                    formData[`q${i}`] = selectedOption.value;
+                }
+            }
+            
+            localStorage.setItem('caatFormData', JSON.stringify(formData));
+        }
+
+        function loadFormData() {
+            try {
+                const savedData = localStorage.getItem('caatFormData');
+                if (savedData) {
+                    const formData = JSON.parse(savedData);
+                    
+                    // Restore patient info
+                    if (formData.patientName) document.getElementById('patientName').value = formData.patientName;
+                    if (formData.patientAge) document.getElementById('patientAge').value = formData.patientAge;
+                    if (formData.patientPhone) document.getElementById('patientPhone').value = formData.patientPhone;
+                    if (formData.doctorName) document.getElementById('doctorName').value = formData.doctorName;
+                    if (formData.additionalEmail) document.getElementById('additionalEmail').value = formData.additionalEmail;
+                    
+                    // Restore question responses
+                    for (let i = 1; i <= 8; i++) {
+                        if (formData[`q${i}`]) {
+                            const radio = document.querySelector(`input[name="q${i}"][value="${formData[`q${i}`]}"]`);
+                            if (radio) {
+                                radio.checked = true;
+                            }
+                        }
+                    }
+                    
+                    updateScore();
+                }
+            } catch (err) {
+                console.log('Could not load saved form data');
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved form data
+            loadFormData();
+            
+            // Auto-save on input change
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('change', saveFormData);
+            });
+            
+            // Clear saved data when form is submitted successfully
+            const originalGenerateResult = generateResult;
+            generateResult = function() {
+                originalGenerateResult();
+                if (resultData) {
+                    localStorage.removeItem('caatFormData');
+                }
+            };
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key >= '0' && e.key <= '5') {
+                const focusedElement = document.activeElement;
+                if (focusedElement && focusedElement.type === 'radio') {
+                    const questionName = focusedElement.name;
+                    const targetInput = document.querySelector(`input[name="${questionName}"][value="${e.key}"]`);
+                    if (targetInput) {
+                        targetInput.checked = true;
+                        updateScore();
+                        saveFormData();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
